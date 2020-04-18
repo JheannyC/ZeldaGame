@@ -17,8 +17,8 @@ import java.util.List;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     public static JFrame frame;
-    private final int WIDTH = 160;
-    private final int HEIGHT = 120;
+    public static final int WIDTH = 160;
+    public static final int HEIGHT = 120;
     private final int SCALE = 3;
 
     private Thread thread;
@@ -26,10 +26,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private final BufferedImage image;
 
-    public List <Entity> entities;
+    public static List <Entity> entities;
     public static SpriteSheet spriteSheet;
 
-    private Player player;
+    public static Player player;
     public static World world;
 
     public Game() {
@@ -42,9 +42,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<>();
         spriteSheet = new SpriteSheet("/spritesheet.png");
-        world = new World("/map.png");
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
+        world = new World("/map.png");
+
     }
     public void initFrame() {
         frame = new JFrame("New Game");
@@ -90,6 +91,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         Graphics g = image.getGraphics();
 
+
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0, WIDTH, HEIGHT);
 
@@ -101,7 +103,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         g.dispose(); //melhorar performance
         g = bs.getDrawGraphics();
-
         g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
         bs.show();
     }
