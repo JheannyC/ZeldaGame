@@ -17,8 +17,7 @@ public class Player extends Entity {
     private BufferedImage []leftPlayer;
     private BufferedImage [] upPlayer;
     private BufferedImage [] downPlayer;
-    public int rightDir = 0, leftDir = 1, dir = rightDir, upDir = 0, downDir = 1, dir2 = rightDir;
-    private Graphics g;
+    public int rightDir = 0, leftDir = 1, dir = rightDir;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -44,25 +43,23 @@ public class Player extends Entity {
 
     public void tick () {
         moved = false;
-        if (right) {
+        if (right && World.isFree((int) (x+speed), this.getY())){
             moved = true;
             dir = rightDir;
             x += speed;
         }
-        else if (left){
+        else if (left && World.isFree((int) (x-speed), this.getY())){
             moved = true;
             dir = leftDir;
             x -= speed;
         }
 
-        if (up) {
+        if (up && World.isFree(this.getX(), (int) (y-speed))) {
             moved = true;
-            dir2 = upDir;
             y -= speed;
         }
-        else if (down){
+        else if (down && World.isFree (this.getX(), (int) (y+speed))){
             moved = true;
-            dir2 = downDir;
             y += speed;
         }
 
@@ -90,13 +87,7 @@ public class Player extends Entity {
         else if (dir == leftDir) {
             g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
-        /*if (dir2 == upDir) {
-            g.drawImage(upPlayer[index], this.getX(), this.getY(), null);
-        }
 
-        else if (dir2 == downDir) {
-            g.drawImage(downPlayer[index], this.getX(), this.getY(), null);
-        }*/
 
     }
 
