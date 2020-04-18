@@ -38,10 +38,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
 
+        //Iniciando objetos
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<>();
         spriteSheet = new SpriteSheet("/spritesheet.png");
-
+        world = new World("/map.png");
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
     }
@@ -68,13 +69,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
         Game game = new Game();
         game.start();
 
     }
-
     public void tick(){
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -82,28 +81,30 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
 
     }
-
     public  void  render() {
         BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
             this.createBufferStrategy(3);
             return;
         }
+
         Graphics g = image.getGraphics();
-        g.setColor(new Color(0, 255, 0));
+
+        g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0, WIDTH, HEIGHT);
 
+        world.render(g);
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             e.render(g);
         }
+
         g.dispose(); //melhorar performance
         g = bs.getDrawGraphics();
 
         g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
         bs.show();
     }
-
     public void run() {
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -142,7 +143,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -159,7 +159,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.down = true;
         }
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
