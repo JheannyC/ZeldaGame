@@ -14,6 +14,8 @@ public class Enemy extends Entity {
     private int frames = 0, maxFrames = 20, index = 0, maxIndex = 1;
     private BufferedImage []sprites;
 
+    private int life = 5;
+
     public Enemy(int x, int y, int width, int height) {
         super(x, y, width, height, null);
         sprites = new BufferedImage[2];
@@ -48,17 +50,35 @@ public class Enemy extends Entity {
                     !(isColliding(this.getX(), (int) (y - speed)))) {
                 y -= speed;
             }
-
+        }
             frames++;
             if (frames == maxFrames) {
                 frames = 0;
                 index++;
-                if (index > maxIndex) {
+                if (index > maxIndex){
                     index = 0;
                 }
             }
+        collidingBullet();
+        if (life <= 0) {
+            destroySelf();
         }
 
+    }
+
+    private void destroySelf() {
+        Game.entities.remove(this);
+    }
+
+    public void collidingBullet () {
+        for (int i = 0; i < Game.bullets.size(); i++) {
+            Entity entity = Game.bullets.get(i);
+            if (Entity.isColliding(this, entity)) {
+                life--;
+                Game.bullets.remove(i);
+                return;
+            }
+        }
     }
 
     public boolean isColliding (int xNext, int yNext) {

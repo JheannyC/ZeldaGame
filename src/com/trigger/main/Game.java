@@ -6,19 +6,22 @@ import com.trigger.entity.Entity;
 import com.trigger.entity.Player;
 import com.trigger.graficos.SpriteSheet;
 import com.trigger.graficos.UI;
+import com.trigger.world.Camera;
 import com.trigger.world.World;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
     public static JFrame frame;
     public static final int WIDTH = 240;
@@ -44,6 +47,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public Game() {
         rand = new Random();
         addKeyListener(this);
+        addMouseListener(this);
 
         setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
@@ -205,6 +209,33 @@ public class Game extends Canvas implements Runnable, KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.down = false;
         }
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        player.mouseShoot = true;
+        player.mx = (e.getX() / 3);
+        player.my = (e.getY() / 3);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        player.mouseShoot = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
