@@ -19,8 +19,8 @@ import java.util.Random;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     public static JFrame frame;
-    public static final int WIDTH = 160;
-    public static final int HEIGHT = 120;
+    public static final int WIDTH = 240;
+    public static final int HEIGHT = 160;
     private final int SCALE = 3;
 
     private Thread thread;
@@ -53,13 +53,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     }
     public void initFrame() {
-        frame = new JFrame("New Game");
+        frame = new JFrame("Meu jogo");
         frame.add(this);
         frame.setResizable(false);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.pack();
+
     }
     public synchronized void start() {
         thread = new Thread(this);

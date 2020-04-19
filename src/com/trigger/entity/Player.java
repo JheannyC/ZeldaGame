@@ -15,16 +15,13 @@ public class Player extends Entity {
     private boolean moved = false;
     private BufferedImage []rightPlayer;
     private BufferedImage []leftPlayer;
-    private BufferedImage [] upPlayer;
-    private BufferedImage [] downPlayer;
+
     public int rightDir = 0, leftDir = 1, dir = rightDir;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
         rightPlayer = new BufferedImage[4];
         leftPlayer = new BufferedImage[4];
-        upPlayer = new BufferedImage [4];
-        downPlayer = new BufferedImage[4];
 
         for (int i = 0; i < 4; i++) {
             rightPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 0, 16, 16);
@@ -32,17 +29,12 @@ public class Player extends Entity {
         for (int i = 0; i < 4; i++) {
             leftPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 16, 16, 16);
         }
-        for (int i = 0; i < 4; i++) {
-            upPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 16*2, 16, 16);
-        }
-        for (int i = 0; i < 4; i++) {
-            downPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 16*3, 16, 16);
-        }
 
     }
 
     public void tick () {
-        moved = false;
+	moved = false;
+
         if (right && World.isFree((int) (x + speed), this.getY())){
             moved = true;
             dir = rightDir;
@@ -87,10 +79,8 @@ public class Player extends Entity {
         else if (dir == leftDir) {
             g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
-
+        
 
     }
-
-
 
 }
