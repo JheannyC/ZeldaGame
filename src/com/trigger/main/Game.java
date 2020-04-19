@@ -4,6 +4,7 @@ import com.trigger.entity.Enemy;
 import com.trigger.entity.Entity;
 import com.trigger.entity.Player;
 import com.trigger.graficos.SpriteSheet;
+import com.trigger.graficos.UI;
 import com.trigger.world.World;
 
 import javax.swing.*;
@@ -35,6 +36,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Player player;
     public static World world;
     public static Random rand;
+
+    public UI ui;
+
     public Game() {
         rand = new Random();
         addKeyListener(this);
@@ -50,6 +54,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
         world = new World("/map.png");
+        ui = new UI();
 
     }
     public void initFrame() {
@@ -104,10 +109,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.render(g);
         }
-
+        ui.render(g);
         g.dispose(); //melhorar performance
         g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+
+        g.setColor(Color.white);
+        g.setFont(new Font("Impact", Font.PLAIN, 20));
+        g.drawString("Munição: " + player.ammo, 600, 30);
+        g.setColor(Color.white);
+        g.setFont(new Font("Impact", Font.PLAIN, 20));
+        g.drawString("Vida: " + (int)Player.life + " / " + (int)Player.maxLife, 30, 30);
         bs.show();
     }
     public void run() {
@@ -134,7 +146,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             }
 
             if (System.currentTimeMillis() - timer >= 1000) {
-                System.out.println("FPS: " + frames);
+                //System.out.println("FPS: " + frames);
                 frames = 0;
                 timer+=1000;
             }

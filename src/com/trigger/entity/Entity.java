@@ -2,6 +2,7 @@ package com.trigger.entity;
 
 import com.trigger.main.Game;
 import com.trigger.world.Camera;
+import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
 public class Entity {
 
     protected double x, y, width, height;
+    private int maskX, maskY, maskW, maskH;
 
     private BufferedImage sprite;
     public static BufferedImage LIFEPACK_EN = Game.spriteSheet.getSprite(16*6, 0 ,16, 16);
@@ -24,8 +26,19 @@ public class Entity {
         this.width = width;
         this.height = height;
         this.sprite = sprite;
-    }
 
+        this.maskX = 0;
+        this.maskY = 0;
+        this.maskW = width;
+        this.maskH = height;
+    }
+    public void  setMask (int maskX, int maskY, int maskW, int maskH) {
+            this.maskX = maskX;
+            this.maskY = maskY;
+            this.maskW = maskW;
+            this.maskH = maskH;
+
+    }
     public int getX() {
         return (int) x;
     }
@@ -60,9 +73,17 @@ public class Entity {
 
     public void render (Graphics g) {
         g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+        //g.setColor(Color.red);
+        //g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
     }
 
     public void tick() {
 
+    }
+
+    public static boolean isColliding (Entity e1, Entity e2) {
+        Rectangle e1Mask = new Rectangle(e1.getX() + e1.maskX, e1.getY() + e1.maskY, e1.maskW, e1.maskH);
+        Rectangle e2Mask = new Rectangle(e2.getX() + e2.maskX, e2.getY() + e2.maskY, e2.maskW, e2.maskH);
+        return  e1Mask.intersects(e2Mask);
     }
 }
