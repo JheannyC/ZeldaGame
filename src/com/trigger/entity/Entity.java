@@ -10,7 +10,8 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("ALL")
 public class Entity {
 
-    protected double x, y, width, height;
+    protected double x, y;
+    protected int width, height;
     private int maskX, maskY, maskW, maskH;
 
     private BufferedImage sprite;
@@ -18,6 +19,8 @@ public class Entity {
     public static BufferedImage WEAPON_EN = Game.spriteSheet.getSprite(16*7, 0 ,16, 16);
     public static BufferedImage BULLET_EN = Game.spriteSheet.getSprite(16*6, 16 ,16, 16);
     public static BufferedImage ENEMY_EN = Game.spriteSheet.getSprite(16*7, 16 ,16, 16);
+    public static BufferedImage GUN_LEFT_EN = Game.spriteSheet.getSprite(16*9, 0 ,16, 16);
+    public static BufferedImage GUN_RIGHT_EN = Game.spriteSheet.getSprite(16*8, 0 ,16, 16);
 
 
     public Entity(int x, int y, int width, int height, BufferedImage sprite) {

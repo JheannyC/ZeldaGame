@@ -1,5 +1,6 @@
 package com.trigger.main;
 
+import com.trigger.entity.BulletShoot;
 import com.trigger.entity.Enemy;
 import com.trigger.entity.Entity;
 import com.trigger.entity.Player;
@@ -31,6 +32,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static List <Entity> entities;
     public static List <Enemy> enemies;
+    public static List <BulletShoot> bullets;
     public static SpriteSheet spriteSheet;
 
     public static Player player;
@@ -48,14 +50,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         //Iniciando objetos
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        ui = new UI();
+        initObjects();
+
+    }
+    public void  initObjects () {
         entities = new ArrayList<>();
         enemies = new ArrayList<>();
+        bullets = new ArrayList<>();
         spriteSheet = new SpriteSheet("/spritesheet.png");
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
         world = new World("/map.png");
-        ui = new UI();
-
     }
     public void initFrame() {
         frame = new JFrame("Meu jogo");
@@ -91,6 +97,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.tick();
         }
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).tick();
+        }
+
 
     }
     public  void  render() {
@@ -109,6 +119,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.render(g);
         }
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).render(g);
+        }
         ui.render(g);
         g.dispose(); //melhorar performance
         g = bs.getDrawGraphics();
@@ -119,7 +132,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.drawString("Munição: " + player.ammo, 600, 30);
         g.setColor(Color.white);
         g.setFont(new Font("Impact", Font.PLAIN, 20));
-        g.drawString("Vida: " + (int)Player.life + " / " + (int)Player.maxLife, 30, 30);
+        g.drawString("Vida: " + (int)Game.player.life + " / " + (int)Game.player.maxLife, 30, 30);
         bs.show();
     }
     public void run() {
@@ -173,6 +186,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.down = true;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            player.shoot = true;
         }
     }
     @Override

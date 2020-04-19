@@ -26,12 +26,8 @@ public class Enemy extends Entity {
 
         if (isCollidingWithPlayer()) {
             if (Game.rand.nextInt(100) < 10) {
-                Player.life--;
-                System.out.println("Vida: " + Player.life);
-                if (Player.life <= 0) {
-                    //System.exit(1);
-
-                }
+                Game.player.life -= Game.rand.nextInt(3);
+                Game.player.isDamaged = true;
             }
         } else {
             if ((int) x < Game.player.getX() &&
@@ -62,6 +58,7 @@ public class Enemy extends Entity {
                 }
             }
         }
+
     }
 
     public boolean isColliding (int xNext, int yNext) {

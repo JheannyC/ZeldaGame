@@ -1,11 +1,15 @@
 package com.trigger.entity;
 
+import com.trigger.graficos.SpriteSheet;
 import com.trigger.main.Game;
 import com.trigger.world.Camera;
 import com.trigger.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static com.trigger.main.Game.*;
 
 public class Player extends Entity {
 
@@ -15,12 +19,18 @@ public class Player extends Entity {
     private boolean moved = false;
     private BufferedImage []rightPlayer;
     private BufferedImage []leftPlayer;
+    private BufferedImage playerDamage;
 
     public int rightDir = 0, leftDir = 1, dir = rightDir;
 
-    public static double life = 100, maxLife = 100;
+    public double life = 100, maxLife = 100;
 
     public int ammo = 0;
+    private boolean hasGun = false;
+
+    public boolean isDamaged = false;
+    private int damageFrames = 0;
+    public boolean shoot = false;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -34,6 +44,7 @@ public class Player extends Entity {
 	    playerMoviment();
         collisionLifePack();
         collisionAmmo();
+        collisionGun();
         camera();
     }
 
@@ -42,11 +53,13 @@ public class Player extends Entity {
     }
 
     public void initPlayer () {
+        playerDamage = spriteSheet.getSprite(0, 16, 16, 16);
+
         for (int i = 0; i < 4; i++) {
-            rightPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 0, 16, 16);
+            rightPlayer [i] = spriteSheet.getSprite(32 + (i*16), 0, 16, 16);
         }
         for (int i = 0; i < 4; i++) {
-            leftPlayer [i] = Game.spriteSheet.getSprite(32 + (i*16), 16, 16, 16);
+            leftPlayer [i] = spriteSheet.getSprite(32 + (i*16), 16, 16, 16);
         }
     }
 
@@ -82,15 +95,61 @@ public class Player extends Entity {
                 }
             }
         }
+        if (isDamaged) {
+            this.damageFrames++;
+            if (this.damageFrames == 5) {
+                this.damageFrames = 0;
+                isDamaged = false;
+            }
+        }
+        if (life <= 0) {
+            newGame();
+        }
+
+        if (shoot) {
+            shoot = false;
+            if (hasGun && ammo > 0){
+                ammo--;
+                 int dx = 0;
+                if (dir == rightDir){
+                    dx = 1;
+                } else {
+                    dx = -1;
+                }
+
+                BulletShoot bullet = new BulletShoot(this.getX(), this.getY() + 8, 3, 3, null, dx , 0);
+                bullets.add(bullet);
+            }
+        }
+
+    }
+    public void newGame () {
+        Game.entities = new ArrayList<>();
+        Game.enemies = new ArrayList<>();
+        spriteSheet = new SpriteSheet("/spritesheet.png");
+        Game.player = new Player(0, 0, 16, 16, Game.spriteSheet.getSprite(32, 0, 16, 16));
+        Game.entities.add(Game.player);
+        Game.world = new World("/map.png");
     }
 
     public void moviment(Graphics g) {
+        if (!isDamaged) {
         if (dir == rightDir) {
             g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            if (hasGun) {
+                g.drawImage(Entity.GUN_RIGHT_EN, this.getX() + 8 - Camera.x, this.getY() - Camera.y, null);
+
+            }
         }
 
         else if (dir == leftDir) {
             g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            if (hasGun) {
+                g.drawImage(Entity.GUN_LEFT_EN, this.getX() - 8 - Camera.x, this.getY() - Camera.y, null);
+            }
+        }
+        }else {
+            g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
     }
 
@@ -119,6 +178,18 @@ public class Player extends Entity {
             }
         }
     }
+    public void collisionGun () {
+        for (int i = 0; i < Game.entities.size(); i++) {
+            Entity gun = Game.entities.get(i);
+            if (gun instanceof  Weapon) {
+                if(Entity.isColliding(this, gun)) {
+                    hasGun = true;
+                    Game.entities.remove(gun);
+                }
+            }
+        }
+    }
+
 
 
     public void camera () {
