@@ -1,5 +1,6 @@
 package com.trigger.main;
 
+import com.trigger.entity.Enemy;
 import com.trigger.entity.Entity;
 import com.trigger.entity.Player;
 import com.trigger.graficos.SpriteSheet;
@@ -13,6 +14,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -27,12 +29,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final BufferedImage image;
 
     public static List <Entity> entities;
+    public static List <Enemy> enemies;
     public static SpriteSheet spriteSheet;
 
     public static Player player;
     public static World world;
-
+    public static Random rand;
     public Game() {
+        rand = new Random();
         addKeyListener(this);
 
         setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
@@ -41,6 +45,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         //Iniciando objetos
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<>();
+        enemies = new ArrayList<>();
         spriteSheet = new SpriteSheet("/spritesheet.png");
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
@@ -90,8 +95,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
 
         Graphics g = image.getGraphics();
-
-
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0, WIDTH, HEIGHT);
 
@@ -111,10 +114,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-
         int frames = 0;
         double timer = System.currentTimeMillis();
-
+        requestFocus();
         while (isRunning) {
 
             long now = System.nanoTime();
