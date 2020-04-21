@@ -10,14 +10,14 @@ import java.awt.image.BufferedImage;
 public class Enemy extends Entity {
 
     private double speed = 0.3;
-    private int maskX = 1, maskY = 8, maskW = 11, maskH = 11;
+    private int maskX = 0, maskY = 8, maskW = 14, maskH = 14;
     private int frames = 0, maxFrames = 20, index = 0, maxIndex = 1;
     private BufferedImage []sprites;
 
     private int life = 5;
 
     private boolean isDamaged = false;
-    private  int damageFrames = 10, damagedCurrent = 0;
+    private  int damageFrames = 15, damagedCurrent = 0;
 
     public Enemy(int x, int y, int width, int height) {
         super(x, y, width, height, null);

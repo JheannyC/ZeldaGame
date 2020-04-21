@@ -13,7 +13,6 @@ public class Entity {
     protected double x, y;
     protected int width, height;
     private int maskX, maskY, maskW, maskH;
-
     private BufferedImage sprite;
     public static BufferedImage LIFEPACK_EN = Game.spriteSheet.getSprite(16*6, 0 ,16, 16);
     public static BufferedImage WEAPON_EN = Game.spriteSheet.getSprite(16*7, 0 ,16, 16);
@@ -22,7 +21,8 @@ public class Entity {
     public static BufferedImage GUN_LEFT = Game.spriteSheet.getSprite(16*9, 0 ,16, 16);
     public static BufferedImage GUN_RIGHT = Game.spriteSheet.getSprite(16*8, 0 ,16, 16);
     public static BufferedImage ENEMY_FEEDBACK = Game.spriteSheet.getSprite(16*9, 16 ,16, 16);
-
+    public static BufferedImage GUN_DAMAGE_RIGHT = Game.spriteSheet.getSprite(0, 16*2 ,16, 16);
+    public static BufferedImage GUN_DAMAGE_LEFT = Game.spriteSheet.getSprite(0, 16*3 ,16, 16);
 
     public Entity(int x, int y, int width, int height, BufferedImage sprite) {
         this.x = x;
@@ -78,7 +78,7 @@ public class Entity {
     public void render (Graphics g) {
         g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
         //g.setColor(Color.red);
-        //g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
+       //g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
     }
 
     public void tick() {

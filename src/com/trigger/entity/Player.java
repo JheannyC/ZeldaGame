@@ -98,14 +98,14 @@ public class Player extends Entity {
         }
         if (isDamaged) {
             this.damageFrames++;
-            if (this.damageFrames == 5) {
+            if (this.damageFrames == 10) {
                 this.damageFrames = 0;
                 isDamaged = false;
             }
         }
         if (life <= 0) {
-            String newWorld = "level" + CUR_LEVEL + ".png";
-            World.restartGame(newWorld);
+             life = 0;
+             gameState = "GAME_OVER";
         }
 
         if (shoot) {
@@ -156,7 +156,6 @@ public class Player extends Entity {
             g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
             if (hasGun) {
                 g.drawImage(Entity.GUN_RIGHT, this.getX() + 8 - Camera.x, this.getY() - Camera.y, null);
-
             }
         }
 
@@ -168,7 +167,16 @@ public class Player extends Entity {
         }
         }else {
             g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+            if (hasGun) {
+                if (dir == leftDir) {
+                    g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX() - 8 - Camera.x, this.getY() - Camera.y, null);
+                }else {
+                    g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX() + 8 - Camera.x, this.getY() - Camera.y, null);
+                }
+            }
         }
+
+
     }
 
     public void collisionLifePack () {

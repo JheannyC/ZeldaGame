@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="zelda:jar">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="archive" name="zelda.jar">
+      <element id="module-output" name="zelda" />
+    </root>
+  </artifact>
+</component>
