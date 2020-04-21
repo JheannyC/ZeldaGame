@@ -2,6 +2,7 @@ package com.trigger.entity;
 
 import com.trigger.graficos.SpriteSheet;
 import com.trigger.main.Game;
+import com.trigger.main.Sound;
 import com.trigger.world.Camera;
 import com.trigger.world.World;
 
@@ -111,6 +112,7 @@ public class Player extends Entity {
         if (shoot) {
             shoot = false;
             if (hasGun && ammo > 0){
+                Sound.shoot.play();
                 ammo--;
                  int dx = 0;
                 if (dir == rightDir){
@@ -127,6 +129,7 @@ public class Player extends Entity {
         if (mouseShoot) {
             mouseShoot = false;
             if (hasGun && ammo > 0){
+                Sound.shoot.play();
                 ammo--;
                 int px = 0, py = 8;
                 double angle = 0;
@@ -184,6 +187,7 @@ public class Player extends Entity {
             Entity entity = Game.entities.get(i);
             if (entity instanceof  LifePack) {
                 if(Entity.isColliding(this, entity)) {
+                    Sound.collect.play();
                     life += 8;
                     if (life >= 100)
                         life = 100;
@@ -198,6 +202,7 @@ public class Player extends Entity {
             Entity bullet = Game.entities.get(i);
             if (bullet instanceof  Bullet) {
                 if(Entity.isColliding(this, bullet)) {
+                    Sound.collect.play();
                     ammo += 15;
                     Game.entities.remove(bullet);
                 }
@@ -209,6 +214,7 @@ public class Player extends Entity {
             Entity gun = Game.entities.get(i);
             if (gun instanceof  Weapon) {
                 if(Entity.isColliding(this, gun)) {
+                    Sound.collect.play();
                     hasGun = true;
                     Game.entities.remove(gun);
                 }

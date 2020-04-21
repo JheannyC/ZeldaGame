@@ -1,6 +1,7 @@
 package com.trigger.entity;
 
 import com.trigger.main.Game;
+import com.trigger.main.Sound;
 import com.trigger.world.Camera;
 import com.trigger.world.World;
 
@@ -45,6 +46,7 @@ public class Enemy extends Entity {
     private void enemies () {
         if (isCollidingWithPlayer()) {
             if (Game.rand.nextInt(100) < 10) {
+                Sound.hit.play();
                 Game.player.life -= Game.rand.nextInt(3);
                 Game.player.isDamaged = true;
             }
@@ -89,6 +91,7 @@ public class Enemy extends Entity {
 
     private void destroySelf(int life) {
         if (life <= 0){
+            Sound.hit.play();
             Game.enemies.remove(this);
             Game.entities.remove(this);
         }
