@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 public class BulletShoot extends Entity{
 
     private double dx, dy;
-    private double speed = 2;
+    private double speed = 3;
 
     private int life = 40, curLife = 0;
 

@@ -14,7 +14,7 @@ import static com.trigger.main.Game.*;
 public class Player extends Entity {
 
     public boolean right, up, left, down;
-    public double speed  = 0.8;
+    public double speed  = 1.2;
     private int frames = 0, maxFrames = 4, index = 0, maxIndex = 3;
     private boolean moved = false;
     private BufferedImage []rightPlayer;
@@ -104,7 +104,8 @@ public class Player extends Entity {
             }
         }
         if (life <= 0) {
-            newGame();
+            String newWorld = "level" + CUR_LEVEL + ".png";
+            World.restartGame(newWorld);
         }
 
         if (shoot) {
@@ -148,21 +149,13 @@ public class Player extends Entity {
         }
 
     }
-    public void newGame () {
-        Game.entities = new ArrayList<>();
-        Game.enemies = new ArrayList<>();
-        spriteSheet = new SpriteSheet("/spritesheet.png");
-        Game.player = new Player(0, 0, 16, 16, Game.spriteSheet.getSprite(32, 0, 16, 16));
-        Game.entities.add(Game.player);
-        Game.world = new World("/map.png");
-    }
 
     public void moviment(Graphics g) {
         if (!isDamaged) {
         if (dir == rightDir) {
             g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
             if (hasGun) {
-                g.drawImage(Entity.GUN_RIGHT_EN, this.getX() + 8 - Camera.x, this.getY() - Camera.y, null);
+                g.drawImage(Entity.GUN_RIGHT, this.getX() + 8 - Camera.x, this.getY() - Camera.y, null);
 
             }
         }
@@ -170,7 +163,7 @@ public class Player extends Entity {
         else if (dir == leftDir) {
             g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
             if (hasGun) {
-                g.drawImage(Entity.GUN_LEFT_EN, this.getX() - 8 - Camera.x, this.getY() - Camera.y, null);
+                g.drawImage(Entity.GUN_LEFT, this.getX() - 8 - Camera.x, this.getY() - Camera.y, null);
             }
         }
         }else {

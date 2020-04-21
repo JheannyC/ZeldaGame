@@ -41,6 +41,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public static Player player;
     public static World world;
     public static Random rand;
+    public static int CUR_LEVEL =1, MAX_LEVEL = 4;
 
     public UI ui;
 
@@ -65,7 +66,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         spriteSheet = new SpriteSheet("/spritesheet.png");
         player = new Player(0, 0, 16, 16, spriteSheet.getSprite(32, 0, 16, 16));
         entities.add(player);
-        world = new World("/map.png");
+        world = new World("/level1.png");
     }
     public void initFrame() {
         frame = new JFrame("Meu jogo");
@@ -104,8 +105,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).tick();
         }
+        nextLevel();
 
-
+    }
+    private void nextLevel () {
+        if (enemies.size() == 0) {
+            CUR_LEVEL++;
+            if(CUR_LEVEL > MAX_LEVEL) {
+                CUR_LEVEL = 1;
+            }
+            String newWorld = "level" + CUR_LEVEL + ".png";
+            World.restartGame(newWorld);
+        }
     }
     public  void  render() {
         BufferStrategy bs = this.getBufferStrategy();
@@ -137,6 +148,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         g.setColor(Color.white);
         g.setFont(new Font("Impact", Font.PLAIN, 20));
         g.drawString("Vida: " + (int)Game.player.life + " / " + (int)Game.player.maxLife, 30, 30);
+        g.setColor(Color.white);
+        g.setFont(new Font("Impact", Font.PLAIN, 20));
+        g.drawString("Level: " + CUR_LEVEL, 350, 30);
         bs.show();
     }
     public void run() {
